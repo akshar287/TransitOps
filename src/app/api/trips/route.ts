@@ -34,12 +34,13 @@ export async function POST(req: Request) {
     const body = await req.json();
     await dbConnect();
 
-    // Just creating a Draft trip doesn't require a transaction, but dispatching does.
-    // If they want to just save as Draft without dispatching yet:
     const tripCode = `TRP-${Date.now().toString().slice(-6)}`;
+    const etaMinutes = Math.round((Number(body.plannedDistanceKm) || 100) * 1.5); // 1.5 mins per km (approx 40 km/h)
+    
     const trip = await Trip.create({
       tripCode,
       ...body,
+      etaMinutes,
       status: 'Draft',
     });
 

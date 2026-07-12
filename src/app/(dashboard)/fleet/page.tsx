@@ -80,7 +80,7 @@ export default function FleetPage() {
     { header: 'Type', accessorKey: 'type' },
     { header: 'Capacity (kg)', accessorKey: 'maxCapacityKg' },
     { header: 'Odometer', accessorKey: 'odometer' },
-    { header: 'Cost', accessorKey: 'acquisitionCost', cell: (item: any) => `$${item.acquisitionCost.toLocaleString()}` },
+    { header: 'Cost', accessorKey: 'acquisitionCost', cell: (item: any) => `₹${item.acquisitionCost.toLocaleString()}` },
     { header: 'Status', accessorKey: 'status', cell: (item: any) => <StatusBadge status={item.status} /> },
   ];
 

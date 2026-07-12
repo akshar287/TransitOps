@@ -101,7 +101,7 @@ export default function MaintenancePage() {
   const columns = [
     { header: 'Vehicle', accessorKey: 'vehicle', cell: (item: any) => <span className="font-semibold">{item.vehicleId?.regNo}</span> },
     { header: 'Service Type', accessorKey: 'serviceType' },
-    { header: 'Cost', accessorKey: 'cost', cell: (item: any) => `$${item.cost.toLocaleString()}` },
+    { header: 'Cost', accessorKey: 'cost', cell: (item: any) => `₹${item.cost.toLocaleString()}` },
     { header: 'Date', accessorKey: 'date', cell: (item: any) => new Date(item.date).toLocaleDateString() },
     { header: 'Status', accessorKey: 'status', cell: (item: any) => (
       <div className="flex items-center gap-3">

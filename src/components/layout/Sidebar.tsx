@@ -31,30 +31,32 @@ export function Sidebar() {
 
   return (
     <aside className="w-[220px] border-r border-sidebar-border bg-sidebar h-screen sticky top-0 flex flex-col shrink-0 z-20">
-      <div className="p-6">
-        <h1 className="text-xl font-bold tracking-tight text-primary flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-gradient-to-br from-[#E8A33D] to-[#D98C1F] flex items-center justify-center">
-            <span className="text-[#0B0B0D] font-bold text-sm leading-none">T</span>
-          </div>
+      <div className="p-6 pb-4">
+        <h1 className="text-xl font-bold tracking-tight text-foreground font-sans">
           TransitOps
         </h1>
-        <p className="text-[11px] uppercase tracking-wider text-muted-foreground mt-2">Smart Transport</p>
+        <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mt-1">
+          Fleet Management
+        </p>
       </div>
-      <nav className="flex-1 px-3 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 space-y-1 overflow-y-auto mt-4">
         {navItems.filter(item => !role || item.roles.includes(role)).map((item) => {
           const isActive = pathname === item.href || (pathname.startsWith(item.href + '/') && item.href !== '/');
           return (
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-150 ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors duration-150 relative ${
                 isActive 
-                  ? 'bg-sidebar-accent text-sidebar-accent-foreground border-l-2 border-primary -ml-[2px]' 
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold' 
+                  : 'text-muted-foreground hover:bg-sidebar-accent/30 hover:text-foreground'
               }`}
             >
-              <item.icon className="w-4 h-4" />
-              <span className="text-[13px] font-medium">{item.name}</span>
+              {isActive && (
+                <div className="absolute left-0 top-1/4 bottom-1/4 w-[3px] bg-primary rounded-r" />
+              )}
+              <item.icon className={`w-4 h-4 ${isActive ? 'text-primary' : 'text-muted-foreground/80'}`} />
+              <span className="text-[13px]">{item.name}</span>
             </Link>
           );
         })}

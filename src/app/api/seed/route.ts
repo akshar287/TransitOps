@@ -38,14 +38,14 @@ export async function GET() {
     const vehiclesData = [];
     for (let i = 1; i <= 50; i++) {
       const isTruck = i % 5 !== 0; // 80% trucks, 20% vans
-      const regNo = isTruck ? `TRK-${1000 + i}` : `VAN-${2000 + i}`;
+      const regNo = isTruck ? `MH-12-TR-${1000 + i}` : `MH-12-VN-${2000 + i}`;
       const nameModel = isTruck 
-        ? (i % 3 === 0 ? 'Volvo FH16' : (i % 3 === 1 ? 'Scania R500' : 'MAN TGX'))
-        : (i % 2 === 0 ? 'Mercedes Sprinter' : 'Ford Transit');
+        ? (i % 3 === 0 ? 'Tata Prima 5530.S' : (i % 3 === 1 ? 'Ashok Leyland 5525' : 'BharatBenz 5528TT'))
+        : (i % 2 === 0 ? 'Mahindra Bolero Pik-Up' : 'Tata Winger');
       const type = isTruck ? 'Heavy Duty' : 'Light Duty';
       const maxCapacityKg = isTruck ? (i % 2 === 0 ? 40000 : 38000) : 3500;
       const odometer = 20000 + (i * 4500);
-      const acquisitionCost = isTruck ? 130000 + ((i % 5) * 10000) : 40000 + ((i % 3) * 5000);
+      const acquisitionCost = isTruck ? 1300000 + ((i % 5) * 100000) : 400000 + ((i % 3) * 50000); // INR Values
       
       // Distribution of statuses: 
       // 1-25 Available, 26-42 OnTrip (17 vehicles), 43-47 InShop (5 vehicles), 48-50 Retired (3 vehicles)
@@ -70,15 +70,15 @@ export async function GET() {
     }
     const vehicles = await Vehicle.insertMany(vehiclesData);
 
-    // 3. Generate 50 Drivers
+    // 3. Generate 50 Drivers with Indian names
     const driversData = [];
     const licenseCategories = ['C', 'CE', 'D', 'DE'];
-    const firstNames = ['John', 'Jane', 'Michael', 'Sarah', 'David', 'Emily', 'Robert', 'Jessica', 'William', 'Ashley', 'James', 'Amanda', 'Charles', 'Mary', 'Joseph', 'Patricia', 'Thomas', 'Jennifer', 'Daniel', 'Linda'];
-    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin'];
+    const firstNames = ['Rajesh', 'Amit', 'Sanjay', 'Vijay', 'Ramesh', 'Arjun', 'Anil', 'Vikram', 'Sunil', 'Rahul', 'Deepak', 'Sandeep', 'Manoj', 'Pankaj', 'Rohan', 'Karan', 'Aditya', 'Gaurav', 'Aakash', 'Abhishek'];
+    const lastNames = ['Kumar', 'Singh', 'Patel', 'Sharma', 'Yadav', 'Verma', 'Mehta', 'Rathore', 'Joshi', 'Gupta', 'Das', 'Mishra', 'Nair', 'Pillai', 'Reddy', 'Rao', 'Choudhury', 'Banerjee', 'Chatterjee', 'Sen'];
 
     for (let i = 1; i <= 50; i++) {
       const name = `${firstNames[i % firstNames.length]} ${lastNames[i % lastNames.length]}`;
-      const licenseNo = `DL-${100000 + i * 17}`;
+      const licenseNo = `IND-DL-${100000 + i * 17}`;
       const licenseCategory = licenseCategories[i % licenseCategories.length];
       
       // 5 expired, others valid (future)
@@ -90,7 +90,7 @@ export async function GET() {
         licenseExpiry.setFullYear(licenseExpiry.getFullYear() + ((i % 3) + 1));
       }
 
-      const contactNumber = `+1-555-${String(i).padStart(4, '0')}`;
+      const contactNumber = `+91-98765-${String(i).padStart(5, '0')}`;
       const safetyScore = 60 + (i % 41); // 60 to 100
       const tripCompletionPct = 80 + (i % 21); // 80 to 100
       
@@ -120,10 +120,10 @@ export async function GET() {
     }
     const drivers = await Driver.insertMany(driversData);
 
-    // 4. Generate Trips
+    // 4. Generate Trips with Indian locations
     const tripsData = [];
-    const sources = ['New York, NY', 'Chicago, IL', 'Los Angeles, CA', 'Seattle, WA', 'Miami, FL', 'Dallas, TX', 'Atlanta, GA', 'Denver, CO', 'Phoenix, AZ', 'San Francisco, CA'];
-    const destinations = ['Boston, MA', 'Detroit, MI', 'Las Vegas, NV', 'Portland, OR', 'Orlando, FL', 'Houston, TX', 'Charlotte, NC', 'Salt Lake City, UT', 'San Diego, CA', 'Seattle, WA'];
+    const sources = ['Mumbai, MH', 'Delhi, DL', 'Bengaluru, KA', 'Chennai, TN', 'Kolkata, WB', 'Pune, MH', 'Ahmedabad, GJ', 'Hyderabad, TS', 'Jaipur, RJ', 'Surat, GJ'];
+    const destinations = ['Pune, MH', 'Gurugram, HR', 'Mysuru, KA', 'Coimbatore, TN', 'Howrah, WB', 'Mumbai, MH', 'Vadodara, GJ', 'Secunderabad, TS', 'Udaipur, RJ', 'Navi Mumbai, MH'];
 
     // 4a. 17 Dispatched Trips (mapping to OnTrip vehicles [index 25 to 41] and OnTrip drivers [index 25 to 41])
     for (let i = 0; i < 17; i++) {
@@ -201,7 +201,7 @@ export async function GET() {
       maintenanceData.push({
         vehicleId: vehicles[42 + i]._id,
         serviceType: serviceTypes[i % serviceTypes.length],
-        cost: 200 + (i * 150),
+        cost: 2000 + (i * 1500),
         date: new Date(),
         status: 'Active',
       });
@@ -212,7 +212,7 @@ export async function GET() {
       maintenanceData.push({
         vehicleId: vehicles[i % 50]._id,
         serviceType: serviceTypes[(i + 2) % serviceTypes.length],
-        cost: 150 + (i * 80),
+        cost: 1500 + (i * 800),
         date: new Date(Date.now() - (86400000 * (i + 1))),
         status: 'Completed',
       });
@@ -228,7 +228,7 @@ export async function GET() {
         vehicleId: trip.vehicleId,
         date: new Date(Date.now() - (86400000 * (index % 5 + 1))),
         liters: trip.fuelConsumed || 50,
-        cost: Math.round((trip.fuelConsumed || 50) * 1.5),
+        cost: Math.round((trip.fuelConsumed || 50) * 105), // Approx Rs.105 per liter
       });
     });
 
@@ -238,29 +238,29 @@ export async function GET() {
         vehicleId: vehicles[i % 50]._id,
         date: new Date(Date.now() - (86400000 * (i + 2))),
         liters: 60 + (i * 5),
-        cost: Math.round((60 + (i * 5)) * 1.45),
+        cost: Math.round((60 + (i * 5)) * 103),
       });
     }
     await FuelLog.insertMany(fuelData);
 
     // 7. Generate Expenses (linked to Completed Trips)
-    const expenseData = [];
+    const expenseData: any[] = [];
     completedTripsOnly.forEach((trip, index) => {
-      const toll = 10 + (index * 5);
-      const other = 5 + (index * 2);
+      const toll = 100 + (index * 50);
+      const other = 50 + (index * 20);
       expenseData.push({
         tripId: trip._id,
         vehicleId: trip.vehicleId,
         toll,
         other,
-        maintenanceLinkedCost: index % 4 === 0 ? 120 : 0, // Mock maintenance linkage cost
-        total: toll + other + (index % 4 === 0 ? 120 : 0),
+        maintenanceLinkedCost: index % 4 === 0 ? 1200 : 0,
+        total: toll + other + (index % 4 === 0 ? 1200 : 0),
       });
     });
     await Expense.insertMany(expenseData);
 
     return NextResponse.json({ 
-      message: 'Database seeded successfully with 50 vehicles, 50 drivers, and operational logs.', 
+      message: 'Database seeded successfully with Indian drivers, vehicles (Tata, Ashok Leyland), and locations (Mumbai, Delhi, etc.).', 
       success: true,
       counts: {
         users: users.length,

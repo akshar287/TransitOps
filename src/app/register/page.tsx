@@ -52,8 +52,8 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background">
       {/* Left Panel */}
-      <div className="w-full md:w-[40%] bg-[#141416] border-r border-border p-8 md:p-12 flex flex-col relative overflow-hidden shrink-0">
-        <div className="absolute inset-0 opacity-3 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+      <div className="w-full md:w-[40%] bg-[#FAF7F0] border-r border-border p-8 md:p-12 flex flex-col relative overflow-hidden shrink-0">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, black 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
         
         <div className="relative z-10 flex-1">
           <div className="flex items-center gap-3 mb-16">

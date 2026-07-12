@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-import { Plus, Fuel, DollarSign, Receipt } from 'lucide-react';
+import { Plus, Fuel, IndianRupee, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -114,15 +114,15 @@ export default function ExpensesPage() {
     { header: 'Vehicle', accessorKey: 'vehicle', cell: (item: any) => <span className="font-medium">{item.vehicleId?.regNo}</span> },
     { header: 'Date', accessorKey: 'date', cell: (item: any) => new Date(item.date).toLocaleDateString() },
     { header: 'Liters', accessorKey: 'liters', cell: (item: any) => `${item.liters} L` },
-    { header: 'Fuel Cost', accessorKey: 'cost', cell: (item: any) => <span className="font-bold text-status-orange">${item.cost.toLocaleString()}</span> }
+    { header: 'Fuel Cost', accessorKey: 'cost', cell: (item: any) => <span className="font-bold text-status-orange">₹{item.cost.toLocaleString()}</span> }
   ];
 
   const expenseColumns = [
     { header: 'Trip', accessorKey: 'trip', cell: (item: any) => <span className="font-medium">{item.tripId?.tripCode}</span> },
     { header: 'Vehicle', accessorKey: 'vehicle', cell: (item: any) => <span>{item.vehicleId?.regNo}</span> },
-    { header: 'Toll', accessorKey: 'toll', cell: (item: any) => `$${item.toll.toLocaleString()}` },
-    { header: 'Other', accessorKey: 'other', cell: (item: any) => `$${item.other.toLocaleString()}` },
-    { header: 'Total', accessorKey: 'total', cell: (item: any) => <span className="font-bold">${(item.toll + item.other).toLocaleString()}</span> }
+    { header: 'Toll', accessorKey: 'toll', cell: (item: any) => `₹${item.toll.toLocaleString()}` },
+    { header: 'Other', accessorKey: 'other', cell: (item: any) => `₹${item.other.toLocaleString()}` },
+    { header: 'Total', accessorKey: 'total', cell: (item: any) => <span className="font-bold">₹{(item.toll + item.other).toLocaleString()}</span> }
   ];
 
   const totalExpensePreview = Number(toll || 0) + Number(other || 0);
@@ -131,7 +131,7 @@ export default function ExpensesPage() {
     <div className="space-y-6 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2"><DollarSign className="w-6 h-6 text-primary"/> Fuel & Expense Management</h1>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2"><IndianRupee className="w-6 h-6 text-primary"/> Fuel & Expense Management</h1>
           <p className="text-sm text-muted-foreground">Track operational costs</p>
         </div>
         {isFinance && (
@@ -181,10 +181,10 @@ export default function ExpensesPage() {
         <div className="flex items-center gap-6">
           <div className="text-right">
             <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest">Total Operational Cost (Auto)</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Fuel (${summary?.fuelCost?.toLocaleString()}) + Maint (${summary?.maintenanceCost?.toLocaleString()}) + Misc (${(summary?.tollCost + summary?.otherCost)?.toLocaleString()})</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Fuel (₹{summary?.fuelCost?.toLocaleString()}) + Maint (₹{summary?.maintenanceCost?.toLocaleString()}) + Misc (₹{(summary?.tollCost + summary?.otherCost)?.toLocaleString()})</p>
           </div>
           <div className="text-3xl font-bold tracking-tight text-foreground">
-            ${summary?.totalOperationalCost?.toLocaleString() || 0}
+            ₹{summary?.totalOperationalCost?.toLocaleString() || 0}
           </div>
         </div>
       </div>
@@ -247,7 +247,7 @@ export default function ExpensesPage() {
             
             <div className="bg-muted/50 p-3 rounded flex justify-between items-center text-sm font-medium border border-border mt-4">
               <span className="text-muted-foreground">Calculated Total</span>
-              <span className="text-lg">${totalExpensePreview.toLocaleString()}</span>
+              <span className="text-lg">₹{totalExpensePreview.toLocaleString()}</span>
             </div>
 
             <Button type="submit" className="w-full bg-primary" disabled={submitting}>Save Expense</Button>
