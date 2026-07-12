@@ -10,6 +10,7 @@ export interface ITrip extends Document {
   plannedDistanceKm: number;
   actualOdometerEnd?: number;
   fuelConsumed?: number;
+  cancellationReason?: string;
   status: 'Draft' | 'Dispatched' | 'Completed' | 'Cancelled';
   etaMinutes: number;
   createdAt: Date;
@@ -26,6 +27,7 @@ const TripSchema = new Schema<ITrip>(
     plannedDistanceKm: { type: Number, required: true },
     actualOdometerEnd: { type: Number },
     fuelConsumed: { type: Number },
+    cancellationReason: { type: String },
     status: {
       type: String,
       enum: ['Draft', 'Dispatched', 'Completed', 'Cancelled'],

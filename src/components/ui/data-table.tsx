@@ -1,3 +1,6 @@
+'use client';
+
+import * as React from 'react';
 import {
   Table,
   TableBody,
@@ -5,49 +8,49 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { EmptyState } from "./empty-state";
+} from '@/components/ui/table';
 
-interface Column<T> {
-  header: string;
-  accessorKey: keyof T | string;
-  cell?: (item: T) => React.ReactNode;
-}
-
-interface DataTableProps<T> {
-  data: T[];
-  columns: Column<T>[];
+interface DataTableProps<TData> {
+  columns: {
+    header: string;
+    accessorKey: keyof TData;
+    cell?: (item: TData) => React.ReactNode;
+  }[];
+  data: TData[];
   emptyTitle?: string;
-  emptyDescription?: string;
 }
 
-export function DataTable<T>({ data, columns, emptyTitle = "No data found", emptyDescription = "There are no records to display at this time." }: DataTableProps<T>) {
-  if (!data || data.length === 0) {
-    return <EmptyState title={emptyTitle} description={emptyDescription} />;
-  }
-
+export function DataTable<TData>({ columns, data, emptyTitle = "No results found" }: DataTableProps<TData>) {
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
+    <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader className="bg-muted/50">
-          <TableRow className="hover:bg-transparent border-b-border">
-            {columns.map((col, i) => (
-              <TableHead key={i} className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold h-10">
-                {col.header}
+          <TableRow>
+            {columns.map((column, i) => (
+              <TableHead key={i} className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
+                {column.header}
               </TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((row, rowIndex) => (
-            <TableRow key={rowIndex} className="hover:bg-muted/30 transition-colors border-b-border/50">
-              {columns.map((col, colIndex) => (
-                <TableCell key={colIndex} className="text-[13px] py-3 align-middle font-medium">
-                  {col.cell ? col.cell(row) : (row[col.accessorKey as keyof T] as React.ReactNode)}
-                </TableCell>
-              ))}
+          {data.length > 0 ? (
+            data.map((row, i) => (
+              <TableRow key={i} className="hover:bg-muted/20">
+                {columns.map((column, j) => (
+                  <TableCell key={j} className="text-sm">
+                    {column.cell ? column.cell(row) : String(row[column.accessorKey] || '')}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center text-sm text-muted-foreground">
+                {emptyTitle}
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>
